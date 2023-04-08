@@ -1,0 +1,68 @@
+@font-face {
+    font-family: Cabin;
+    src: url("Cabin/Cabin-VariableFont_wdth,wght.ttf");
+}
+
+html{
+    font-family: Cabin;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+header{
+
+    background-repeat: no-repeat;             /* Changed Background Settings to fit page */
+    background-color: #2C2A4A;
+    background-size: contain;
+    width: 100%;                              /* Changed proportions of header for page */
+    height:7%;
+    font-size: 7vw;
+    text-align: center;
+    color: #050609;
+}
+
+aside{
+    display: table-cell;
+    background-repeat: no-repeat;             /* Changed Background Settings to fit page */
+    background-color: #4F518C;
+    background-size: contain;
+    width: 15%;                              /* Changed proportions of header for page */
+    height:100%;
+    text-align: left;
+    color: #050609;
+}
+
+main{
+    background-color: #907AD6;
+    min-height: 100vw;/* Sets the size for the total proportions of links and main together so they line up properly */
+    width: 100%;
+    display: table;
+    margin: 0px;
+    margin-bottom: 5vw;
+}
+
+textarea{
+    background-color: #dacffc;
+    display: block;
+    width: 80%;
+    height: 600px;
+    resize: none;
+    margin: 0 0 0 0px;
+    padding: 0;
+    border: 0;
+}
+
+input{
+    background-color: #dacffc;
+    display: block;
+    width: 80%;
+    resize: none;
+    margin: 20px 0 0 0px;
+    border-width: 0px 0 0px 0;
+}
+div{
+    align-content: center;
+    margin: 0 0 0 20px;
+}
+
+
