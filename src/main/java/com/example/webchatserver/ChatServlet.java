@@ -7,6 +7,7 @@ import java.util.Set;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.json.JSONObject;
 
 /**
  * This is a class that has services
@@ -35,12 +36,18 @@ public class ChatServlet extends HttpServlet {
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("text/plain");
-
-        // send the random code as the response's content
         PrintWriter out = response.getWriter();
-        out.println(generatingRandomUpperAlphanumericString(5));
-
+        response.setContentType("application/json");
+        JSONObject respData = new JSONObject();
+        String add = request.getParameter("add");
+        String roomCode;
+        if(add.equals("true")){
+            // send the random code as the response's content
+            roomCode = generatingRandomUpperAlphanumericString(5);
+            respData.put("roomId",roomCode);
+        }
+        respData.put("roomList",rooms);
+        out.print(respData);
     }
 
     public void destroy() {
