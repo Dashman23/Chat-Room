@@ -6,8 +6,15 @@
 html{
     font-family: Cabin;
     overflow-x: hidden;
+    overflow-y: hidden;
+    margin: 0;
+    position: relative;
 }
 
+body{
+    height: 100%;
+    margin: 0;
+}
 header{
 
     background-repeat: no-repeat;             /* Changed Background Settings to fit page */
@@ -18,11 +25,12 @@ header{
     font-size: 7vw;
     text-align: center;
     color: #050609;
+
 }
 
 aside{
     display: table-cell;
-
+    position: relative;
     background-repeat: no-repeat;             /* Changed Background Settings to fit page */
     background-color: #4F518C;
     background-size: contain;
@@ -34,11 +42,11 @@ aside{
 
 main{
     background-color: #907AD6;
-    min-height: 50vw;/* Sets the size for the total proportions of links and main together so they line up properly */
+    min-height: 60vw;/* Sets the size for the total proportions of links and main together so they line up properly */
     width: 100%;
     display: table;
     margin: 0px;
-    margin-bottom: 5vw;
+
 }
 
 textarea{
@@ -50,6 +58,7 @@ textarea{
     margin: 0 0 0 0px;
     padding: 0;
     border: 0;
+
 }
 
 input{
@@ -59,10 +68,12 @@ input{
     resize: none;
     margin: 20px 0 0 0px;
     border-width: 0px 0 0px 0;
+
 }
 div{
     align-content: center;
     margin: 0 0 0 20px;
+
 }
 
 footer{
