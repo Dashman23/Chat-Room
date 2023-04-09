@@ -22,6 +22,7 @@ public class ChatServer {
     // contains a static List of ChatRoom used to control the existing rooms and their users
     private static List<ChatRoom> roomList = new ArrayList<>();
     private static Map<String,ChatRoom> sessions = new HashMap<>();
+    private Map<String, String> usernames = new HashMap<String, String>();
     // you may add other attributes as you see fit
 
     @OnOpen
@@ -41,7 +42,23 @@ public class ChatServer {
     @OnClose
     public void close(Session session) throws IOException, EncodeException {
         String userId = session.getId();
+        String username = usernames.get(userId);
+        if (sessions.containsKey(userId)) {
+            ChatRoom room = sessions.get(userId);
+            usernames.remove(userId);
+            // remove this user from the ChatRoom
+            room.removeUser(userId);
 
+            // broadcasting it to peers in the same room
+            for (Session peer : session.getOpenSessions()){ //broadcast this person left the server
+                if(sessions.get(peer.getId()).getCode().equals(room.getCode())) { // broadcast only to those in the same room
+                    peer.getBasicRemote().sendText("{\"message\":\"(Server): " + username + " left the chat room.\"}");
+                }
+            }
+            if (room.getUsers().isEmpty()) {
+                roomList.remove(room);
+            }
+        }
     }
 
     @OnMessage
@@ -49,21 +66,27 @@ public class ChatServer {
         String userId = session.getId();
         JSONObject msg = new JSONObject(comm);
         ChatRoom room = sessions.get(userId);
-        Map<String,String> users = room.getUsers();
         String message = msg.get("message").toString();
-        // login
-        if(users.get(userId).isEmpty()){
-            users.put(userId,message.trim());
-            session.getBasicRemote().sendText("\"message\":\"(Server"+room.getCode()+
-                    "): Welcome, " + message + "!\"}");
+
+        if(usernames.containsKey(userId)){ // not their first message
+            String username = usernames.get(userId);
+
+            // broadcasting it to peers in the same room
+            for(Session peer: session.getOpenSessions()){
+                // only send my messages to those in the same room
+                if(sessions.get(peer.getId()).getCode().equals(room.getCode())) {
+                    peer.getBasicRemote().sendText("{\"message\":\"(" + username + "): " + message + "\"}");
+                }
+            }
             return;
         }
-        // logged in
-        for(Session peer : session.getOpenSessions()){
-            if(users.containsKey(peer.getId())) {
-                peer.getBasicRemote().sendText("{\"message\":\""+message+"\"}");
-            }
-        }
+
+
+        usernames.put(userId, message.trim());
+        room.setUserName(userId, message.trim());
+        session.getBasicRemote().sendText("\"message\":\"(Server"+room.getCode()+
+                "): Welcome, " + message + "!\"}");
+
     }
 
     public ChatRoom getRoom(String roomID, Session session){
