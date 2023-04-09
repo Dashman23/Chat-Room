@@ -61,8 +61,9 @@ public class ChatServer {
                     peer.getBasicRemote().sendText("{\"message\":\"(Server): " + username + " left the chat room.\"}");
                 }
             }
-            if (room.getUsers().isEmpty()) {
-                System.out.println(room.getUsers());
+
+            //removes room from list if no one is using the room anymore
+            if (room.getUsers().keySet().size()==0) {
                 roomList.remove(room);
             }
         }
@@ -95,6 +96,7 @@ public class ChatServer {
                 "): Welcome, " + message + "!\"}");
     }
 
+    //used to ensure each roomID has 1 unique room object, not 1 per session
     public ChatRoom getRoom(String roomID){
         for(ChatRoom room : roomList){
             if(room.getCode().equals(roomID)){
@@ -108,29 +110,3 @@ public class ChatServer {
         return "{\"message\":\"("+user+"): "+text+"\"}";
     }
 }
-
-//backup
-//    public void close(Session session) throws IOException, EncodeException {
-//        String userId = session.getId();
-//        String username = usernames.get(userId);
-//        if (sessions.containsKey(userId)) {
-//            ChatRoom room = sessions.get(userId);
-//            usernames.remove(userId);
-//            // remove this user from the ChatRoom
-//            room.removeUser(userId);
-//
-//            // broadcasting it to peers in the same room
-//            for (Session peer : session.getOpenSessions()){ //broadcast this person left the server
-//
-//                System.out.println(peer.getId());
-//
-//                if(room.inRoom(peer.getId())) { // broadcast only to those in the same room
-//                    peer.getBasicRemote().sendText("{\"message\":\"(Server): " + username + " left the chat room.\"}");
-//                }
-//            }
-//            if (room.getUsers().isEmpty()) {
-//                System.out.println(room.getUsers());
-//                roomList.remove(room);
-//            }
-//        }
-//    }
