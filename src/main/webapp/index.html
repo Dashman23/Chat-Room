@@ -28,9 +28,9 @@
 
 <header>Chat Room</header>
 <main>
+  <div id="margin"></div>
   <aside>
-    <li><a href="about.html">About us</a></li>
-    <br>
+    <a href="about.html">About us</a>
     <p>List of chat rooms:</p>
     <h3 class="d-1" type="button" onclick="newRoom()">Create Room</h3>
     <table id="Rooms"><tbody></tbody></table>
@@ -38,7 +38,7 @@
   </aside>
   <div>
   <h3 id="RoomTitle">You are currently in no Room</h3>
-  <textarea title="Chat Log" id="log" value="Create or join a room to chat" readonly></textarea>
+  <textarea title="Chat Log" id="log" readonly>Create or join a room to chat</textarea>
   <input title="Chat Input" id="input" type="text" autofocus/>
   </div>
 </main>

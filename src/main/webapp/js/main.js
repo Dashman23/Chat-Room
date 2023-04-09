@@ -1,6 +1,7 @@
 let ws = null;
 
 function newRoom(){
+
     if (ws != null) {
         ws.close();
     }
@@ -52,6 +53,7 @@ function timestamp() {
 }
 
 function enterRoom(code){
+    document.getElementById("log").value = "";
     //avoids multiple open sockets
     if (ws != null) {
         ws.close();
