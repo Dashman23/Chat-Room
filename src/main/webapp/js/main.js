@@ -12,6 +12,13 @@ function newRoom(){
         .then(response => response.text())
         .then(response => enterRoom(response)); // enter the room with the code
 }
+
+function timestamp() {
+    var d = new Date(), minutes = d.getMinutes();
+    if (minutes < 10) minutes = '0' + minutes;
+    return d.getHours() + ':' + minutes;
+}
+
 function enterRoom(code){
 
     // refresh the list of rooms
@@ -25,11 +32,20 @@ function enterRoom(code){
         console.log(event.data);
         // parsing the server's message as json
         let message = JSON.parse(event.data);
+        document.getElementById("log").value += "(" + timestamp() + ") " + message.message + "\n";
 
         // handle message
 
         }
-}
 
+
+}
+    document.getElementById("input").addEventListener("keyup", function (event) {
+    if (event.keyCode === 13) {
+        let request = {"type":"chat", "msg":event.target.value};
+        ws.send(JSON.stringify(request));
+        event.target.value = "";
+    }
+});
 
 
