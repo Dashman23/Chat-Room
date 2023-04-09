@@ -28,12 +28,11 @@ function refreshList(){
 
 function listParser(json){
     let codeList = JSON.parse(json).roomList
+    document.getElementById("Rooms").innerHTML = "<tbody></tbody>";
     let table = document.getElementById("Rooms").getElementsByTagName('tbody')[0];
-    console.log(document.getElementById("Rooms").innerHTML)
     for(let i = 0; i < codeList.length; i++) {
         table.insertAdjacentHTML("beforeend",
             " <h3 class=\"d-1\" type=\"button\" onclick=\"enterRoom('"+ codeList[i] +"')\">"+ codeList[i] +"</h3>")
-
     }
 }
 
@@ -45,12 +44,8 @@ function timestamp() {
 
 function enterRoom(code){
 
-    // refresh the list of rooms
-
-
     // create the web socket
     ws = new WebSocket("ws://localhost:8080/WSChatServer-1.0-SNAPSHOT/ws/"+code);
-
 
     document.getElementById("RoomTitle").innerHTML = "You are currently in Room " + code;
 
