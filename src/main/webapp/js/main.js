@@ -2,7 +2,7 @@ let ws;
 
 function newRoom(){
     // calling the ChatServlet to retrieve a new room ID
-    let callURL= "http://localhost:8080/WSChatServer-1.0-SNAPSHOT/chat-servlet";
+    let callURL= "http://localhost:8080/WSChatServer-1.0-SNAPSHOT/chat-servlet?add=true";
     fetch(callURL, {
         method: 'GET',
         headers: {
@@ -11,6 +11,26 @@ function newRoom(){
     })
         .then(response => response.text())
         .then(response => enterRoom(response)); // enter the room with the code
+}
+
+function refreshList(){
+    // calling the ChatServlet to retrieve a new room ID
+    let callURL= "http://localhost:8080/WSChatServer-1.0-SNAPSHOT/chat-servlet?add=false";
+    fetch(callURL, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+        },
+    })
+        .then(response => response.text())
+        .then(response => listParser(response)); // enter the room with the code
+}
+
+function listParser(response){
+    for(let i = 0; i < response.length; i++) {
+        console.log(response[i]);
+
+    }
 }
 
 function timestamp() {
