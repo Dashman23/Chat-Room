@@ -27,26 +27,20 @@ function enterRoom(code){
     // create the web socket
     ws = new WebSocket("ws://localhost:8080/WSChatServer-1.0-SNAPSHOT/ws/"+code);
 
-
     // parse messages received from the server and update the UI accordingly
     ws.onmessage = function (event) {
         console.log(event.data);
         // parsing the server's message as json
         let message = JSON.parse(event.data);
         document.getElementById("log").value += "(" + timestamp() + ") " + message.message + "\n";
-
-        // handle message
-
         }
-
-
 }
-    document.getElementById("input").addEventListener("keyup", function (event) {
+
+// handle message
+document.getElementById("input").addEventListener("keyup", function (event) {
     if (event.keyCode === 13) {
-        let request = {"type":"chat", "msg":event.target.value};
+        let request = {"message":event.target.value};
         ws.send(JSON.stringify(request));
         event.target.value = "";
     }
 });
-
-

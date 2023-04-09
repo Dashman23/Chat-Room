@@ -41,7 +41,7 @@ public class ChatServer {
     @OnClose
     public void close(Session session) throws IOException, EncodeException {
         String userId = session.getId();
-        // do things for when the connection closes
+
     }
 
     @OnMessage
@@ -51,7 +51,8 @@ public class ChatServer {
         ChatRoom room = sessions.get(userId);
         Map<String,String> users = room.getUsers();
         String message = msg.get("message").toString();
-        if(users.get(userId).isEmpty()){ // login
+        // login
+        if(users.get(userId).isEmpty()){
             users.put(userId,message.trim());
             session.getBasicRemote().sendText("\"message\":\"(Server"+room.getCode()+
                     "): Welcome, " + message + "!\"}");
