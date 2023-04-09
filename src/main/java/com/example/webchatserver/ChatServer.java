@@ -48,7 +48,21 @@ public class ChatServer {
     public void handleMessage(String comm, Session session) throws IOException, EncodeException {
         String userId = session.getId();
         JSONObject msg = new JSONObject(comm);
-        if()
+        ChatRoom room = sessions.get(userId);
+        Map<String,String> users = room.getUsers();
+        String message = msg.get("message").toString();
+        if(users.get(userId).isEmpty()){ // login
+            users.put(userId,message.trim());
+            session.getBasicRemote().sendText("\"message\":\"(Server"+room.getCode()+
+                    "): Welcome, " + message + "!\"");
+            return;
+        }
+        // logged in
+        for(Session peer : session.getOpenSessions()){
+            if(users.containsKey(peer.getId())) {
+                peer.getBasicRemote().sendText("{\"message\":\""+message+"\"}");
+            }
+        }
     }
 
     public ChatRoom getRoom(String roomID, Session session){
