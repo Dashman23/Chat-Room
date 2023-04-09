@@ -63,7 +63,10 @@ public class ChatServer {
                 System.out.println(peer.getId());
 
                 if(room.inRoom(peer.getId())) { // broadcast only to those in the same room
-                    peer.getBasicRemote().sendText("{\"message\":\"(Server " + room.getCode() + "): " + username + " left the chat room.\"}");
+                    peer.getBasicRemote().sendText(
+                            createMessage("Server " + room.getCode(),
+                                    username + " left the chat room.")
+                    );
                 }
             }
 
@@ -82,10 +85,11 @@ public class ChatServer {
         ChatRoom room = sessions.get(userId);
         String message = msg.get("message").toString();
 
+        // typical message handling
         if(usernames.containsKey(userId)){ // not their first message
             String username = usernames.get(userId);
 
-            // broadcasting it to peers in the same room
+            // broadcasting it to users in the same room
             for(Session peer: session.getOpenSessions()) {
                 if (room.inRoom(peer.getId())) {
                     peer.getBasicRemote().sendText("{\"message\":\"(" + username + "): " + message + "\"}");
@@ -95,17 +99,21 @@ public class ChatServer {
             return;
         }
 
+        // login
         //if user sent their first message in this room
+        String username = message.trim();
         //updates our usernames list
-        usernames.put(userId, message.trim());
+        usernames.put(userId, username);
         //room object also tracks users currently in its room
-        room.setUserName(userId, message.trim());
-
-        //send welcome message to all users in the same room
-        for(Session peer: session.getOpenSessions()) {
-            if (room.inRoom(peer.getId())) {
-                peer.getBasicRemote().sendText("{\"message\":\"(Server "+room.getCode()+
-                        "): " + message + " has joined the chat room. Everybody say hi!\"}");
+        room.setUserName(userId, username);
+        // send welcome message to new user
+        session.getBasicRemote().sendText(
+                createMessage("Server "+room.getCode(),"Welcome, "+username+"!"));
+        //send welcome message to all other users in the same room
+        for(Session peer : session.getOpenSessions()) {
+            if (room.inRoom(peer.getId()) && !peer.getId().equals(userId)) {
+                peer.getBasicRemote().sendText(createMessage("Server "+room.getCode(),
+                        username+" has joined the chat room. Everybody say hi!"));
             }
         }
     }

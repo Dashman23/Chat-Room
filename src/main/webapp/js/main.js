@@ -1,6 +1,7 @@
 let ws = null;
 
 function newRoom(){
+
     if (ws != null) {
         ws.close();
     }
@@ -12,7 +13,7 @@ function newRoom(){
             'Accept': 'text/plain',
         },
     })
-        .then(response => response.text())
+        .then(response => response.text())  // returns a string in JSON format with fields roomList and roomId
         .then(response => enterRoom(JSON.parse(response).roomId)); // enter the room with the code
 }
 
@@ -52,6 +53,8 @@ function timestamp() {
 }
 
 function enterRoom(code){
+    refreshList()
+    document.getElementById("log").value = "";
     //avoids multiple open sockets
     if (ws != null) {
         ws.close();
@@ -73,9 +76,14 @@ function enterRoom(code){
 
 //sends message over websocket on enter
 document.getElementById("input").addEventListener("keyup", function (event) {
+    refreshList()
     if (event.keyCode === 13) {
         let request = {"message":event.target.value};
         ws.send(JSON.stringify(request));
         event.target.value = "";
     }
 });
+
+(function (){
+    refreshList();
+})
