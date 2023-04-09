@@ -7,6 +7,10 @@ import jakarta.websocket.server.ServerEndpoint;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -16,20 +20,22 @@ import java.io.IOException;
 public class ChatServer {
 
     // contains a static List of ChatRoom used to control the existing rooms and their users
-
+    private static List<ChatRoom> roomList = new ArrayList<>();
+    private static Map<String,ChatRoom> sessions = new HashMap<>();
     // you may add other attributes as you see fit
-
-
 
     @OnOpen
     public void open(@PathParam("roomID") String roomID, Session session) throws IOException, EncodeException {
-
-        session.getBasicRemote().sendText("First sample message to the client");
-//        accessing the roomID parameter
-        System.out.println(roomID);
-
-
-
+        RemoteEndpoint.Basic out = session.getBasicRemote();
+        // try joining
+        ChatRoom room = getRoom(roomID,session);
+        if(room == null){
+            room = new ChatRoom(roomID, session.getId());
+            roomList.add(room);
+            sessions.put(session.getId(),room);
+        }
+        out.sendText(createMessage("Server "+roomID,
+                "Welcome to the server. Please enter a username."));
     }
 
     @OnClose
@@ -40,18 +46,35 @@ public class ChatServer {
 
     @OnMessage
     public void handleMessage(String comm, Session session) throws IOException, EncodeException {
-//        example getting unique userID that sent this message
         String userId = session.getId();
-
-//        Example conversion of json messages from the client
-        //        JSONObject jsonmsg = new JSONObject(comm);
-//        String val1 = (String) jsonmsg.get("attribute1");
-//        String val2 = (String) jsonmsg.get("attribute2");
-
-        // handle the messages
-
-
+        JSONObject msg = new JSONObject(comm);
+        ChatRoom room = sessions.get(userId);
+        Map<String,String> users = room.getUsers();
+        String message = msg.get("message").toString();
+        if(users.get(userId).isEmpty()){ // login
+            users.put(userId,message.trim());
+            session.getBasicRemote().sendText("\"message\":\"(Server"+room.getCode()+
+                    "): Welcome, " + message + "!\"");
+            return;
+        }
+        // logged in
+        for(Session peer : session.getOpenSessions()){
+            if(users.containsKey(peer.getId())) {
+                peer.getBasicRemote().sendText("{\"message\":\""+message+"\"}");
+            }
+        }
     }
 
+    public ChatRoom getRoom(String roomID, Session session){
+        for(ChatRoom room : roomList){
+            if(room.getCode().equals(roomID)){
+                return room;
+            }
+        }
+        return null;
+    }
 
+    public String createMessage(String user, String text){
+        return "{\"message\":\"("+user+")"+text+"\"";
+    }
 }
