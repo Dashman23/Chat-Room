@@ -13,8 +13,11 @@ function newRoom(){
             'Accept': 'text/plain',
         },
     })
-        .then(response => response.text())  // returns a string in JSON format with fields roomList and roomId
-        .then(response => enterRoom(JSON.parse(response).roomId)); // enter the room with the code
+        .then(response => JSON.parse(response.text()))  // returns a string in JSON format with fields roomList and roomId
+        .then(response => {
+            listParser(response.roomList);
+            enterRoom(response.roomId);
+        }); // enter the room with the code
 }
 
 function refreshList(){
