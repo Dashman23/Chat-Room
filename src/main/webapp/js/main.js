@@ -53,6 +53,7 @@ function timestamp() {
 }
 
 function enterRoom(code){
+    refreshList()
     document.getElementById("log").value = "";
     //avoids multiple open sockets
     if (ws != null) {
@@ -75,9 +76,14 @@ function enterRoom(code){
 
 //sends message over websocket on enter
 document.getElementById("input").addEventListener("keyup", function (event) {
+    refreshList()
     if (event.keyCode === 13) {
         let request = {"message":event.target.value};
         ws.send(JSON.stringify(request));
         event.target.value = "";
     }
 });
+
+(function (){
+    refreshList();
+})
