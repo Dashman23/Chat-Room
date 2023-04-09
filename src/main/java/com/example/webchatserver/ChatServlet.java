@@ -37,13 +37,16 @@ public class ChatServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         response.setContentType("application/json");
         JSONObject respData = new JSONObject();
-        String add = request.getParameter("add");
+        // query string has form: /chat-servlet?add={boolean}
+        boolean add = Boolean.parseBoolean(request.getParameter("add"));
         String roomCode;
-        if(add.equals("true")){
+        // only creates a new room when told
+        if(add){
             // send the random code as the response's content
             roomCode = generatingRandomUpperAlphanumericString(5);
             respData.put("roomId",roomCode);
         }
+        // always returns list of rooms
         respData.put("roomList",rooms);
         out.print(respData);
     }

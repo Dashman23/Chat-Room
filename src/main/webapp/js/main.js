@@ -12,7 +12,7 @@ function newRoom(){
             'Accept': 'text/plain',
         },
     })
-        .then(response => response.text())
+        .then(response => response.text())  // returns a string in JSON format with fields roomList and roomId
         .then(response => enterRoom(JSON.parse(response).roomId)); // enter the room with the code
 }
 
