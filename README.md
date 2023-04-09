@@ -44,4 +44,13 @@ To run this project, you must first install IntelliJ IDEA, GlassFish 7.0.0 (or s
   server tab within your browser.
 
 ### External Resources
-TODO
+Aside from the default dependencies in the maven project, Jakarta websocket and servlet dependencies were used to 
+handle the socket connections and requests within our program. We also used the json library 
+to parse and create json objects.
+The code for using these dependencies can be copied from the 'pom.xml' file within our project files. 
+
+[1] https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api
+
+[2] https://mvnrepository.com/artifact/jakarta.websocket/jakarta.websocket-api
+
+[3] https://mvnrepository.com/artifact/org.json/json
