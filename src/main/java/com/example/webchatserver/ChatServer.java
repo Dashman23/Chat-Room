@@ -33,8 +33,8 @@ public class ChatServer {
         if(room == null){
             room = new ChatRoom(roomID, session.getId());
             roomList.add(room);
+            sessions.put(session.getId(),room);
         }
-        sessions.put(session.getId(),room);
         out.sendText(createMessage("Server "+roomID,
                 "Welcome to the server. Please enter a username."));
     }
