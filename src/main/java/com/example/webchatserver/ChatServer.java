@@ -54,7 +54,7 @@ public class ChatServer {
         // login
         if(users.get(userId).isEmpty()){
             users.put(userId,message.trim());
-            session.getBasicRemote().sendText("\"message\":\"(Server"+room.getCode()+
+            session.getBasicRemote().sendText("{\"message\":\"(Server"+room.getCode()+
                     "): Welcome, " + message + "!\"}");
             return;
         }
