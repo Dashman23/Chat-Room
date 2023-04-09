@@ -27,6 +27,9 @@ function enterRoom(code){
     // create the web socket
     ws = new WebSocket("ws://localhost:8080/WSChatServer-1.0-SNAPSHOT/ws/"+code);
 
+
+    document.getElementById("RoomTitle").innerHTML = "You are currently in Room " + code;
+
     // parse messages received from the server and update the UI accordingly
     ws.onmessage = function (event) {
         console.log(event.data);
