@@ -28,26 +28,14 @@ public class ChatServer {
     public void open(@PathParam("roomID") String roomID, Session session) throws IOException, EncodeException {
         RemoteEndpoint.Basic out = session.getBasicRemote();
         // try joining
-
         ChatRoom room = getRoom(roomID,session);
         if(room == null){
             room = new ChatRoom(roomID, session.getId());
             roomList.add(room);
             sessions.put(session.getId(),room);
-
-        } else{
-            out.sendText(createMessage("Server "+roomID,"Welcome to the server"));
         }
-
-        // should notify client when new room is created
-
-        // when joining a room, user will be prompted to enter username
-        session.getBasicRemote().sendText("First sample message to the client");
-//        accessing the roomID parameter
-        System.out.println(roomID);
-
-
-
+        out.sendText(createMessage("Server "+roomID,
+                "Welcome to the server. Please enter a username."));
     }
 
     @OnClose
@@ -58,17 +46,9 @@ public class ChatServer {
 
     @OnMessage
     public void handleMessage(String comm, Session session) throws IOException, EncodeException {
-//        example getting unique userID that sent this message
         String userId = session.getId();
-
-//        Example conversion of json messages from the client
-        //        JSONObject jsonmsg = new JSONObject(comm);
-//        String val1 = (String) jsonmsg.get("attribute1");
-//        String val2 = (String) jsonmsg.get("attribute2");
-
-        // handle the messages
-
-
+        JSONObject msg = new JSONObject(comm);
+        if()
     }
 
     public ChatRoom getRoom(String roomID, Session session){
@@ -81,7 +61,6 @@ public class ChatServer {
     }
 
     public String createMessage(String user, String text){
-        JSONObject msg = new JSONObject();
-        msg.put()
+        return "{\"message\":\"("+user+")"+text+"\"";
     }
 }
