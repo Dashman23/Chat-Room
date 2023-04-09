@@ -21,35 +21,40 @@ public class ChatServer {
 
     // contains a static List of ChatRoom used to control the existing rooms and their users
     private static List<ChatRoom> roomList = new ArrayList<>();
+    //sessions tracks which active ids are in which active room
     private static Map<String,ChatRoom> sessions = new HashMap<>();
+    //usernames storesthe username of each active id for chat outputs
     private Map<String, String> usernames = new HashMap<String, String>();
-    // you may add other attributes as you see fit
 
     @OnOpen
     public void open(@PathParam("roomID") String roomID, Session session) throws IOException, EncodeException {
         RemoteEndpoint.Basic out = session.getBasicRemote();
-        // try joining
-        String userId = session.getId();
 
+        //getRoom function will check if there is already a ChatRoom object tracking a room
         ChatRoom room = getRoom(roomID);
+        //if we need a new ChatRoom object, we create one and add it to our list of active rooms
         if(room == null){
             room = new ChatRoom(roomID, session.getId());
             roomList.add(room);
         }
 
+        //tracking which room each id is in
         sessions.put(session.getId(),room);
+        //welcome message
         out.sendText(createMessage("Server "+roomID,
                 "Welcome to the server. Please enter a username."));
     }
 
     @OnClose
     public void close(Session session) throws IOException, EncodeException {
+        //useful variables
         String userId = session.getId();
         String username = usernames.get(userId);
+
         if (sessions.containsKey(userId)) {
             ChatRoom room = sessions.get(userId);
+            // remove this user from the ChatRoom object and our username/id map
             usernames.remove(userId);
-            // remove this user from the ChatRoom
             room.removeUser(userId);
 
             // broadcasting it to peers in the same room
@@ -62,7 +67,7 @@ public class ChatServer {
                 }
             }
 
-            //removes room from list if no one is using the room anymore
+            //removes room from roomList if no one is using the room anymore
             if (room.getUsers().keySet().size()==0) {
                 roomList.remove(room);
             }
@@ -71,6 +76,7 @@ public class ChatServer {
 
     @OnMessage
     public void handleMessage(String comm, Session session) throws IOException, EncodeException {
+        //useful variables
         String userId = session.getId();
         JSONObject msg = new JSONObject(comm);
         ChatRoom room = sessions.get(userId);
@@ -89,12 +95,17 @@ public class ChatServer {
             return;
         }
 
+        //if user sent their first message in this room
+        //updates our usernames list
         usernames.put(userId, message.trim());
+        //room object also tracks users currently in its room
         room.setUserName(userId, message.trim());
+
+        //send welcome message to all users in the same room
         for(Session peer: session.getOpenSessions()) {
             if (room.inRoom(peer.getId())) {
                 peer.getBasicRemote().sendText("{\"message\":\"(Server "+room.getCode()+
-                        "): Welcome, " + message + ". Everybody say hi!\"}");
+                        "): " + message + " has joined the chat room. Everybody say hi!\"}");
             }
         }
     }

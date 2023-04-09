@@ -40,7 +40,7 @@ To run this project, you must first install IntelliJ IDEA, GlassFish 7.0.0 (or s
 - Then, open any shell of your choice, and navigate to your desired directory, where you will clone the project.
 - type 'git clone *link*', where *link* represents the HTTPS link you copied from our repository.
 - Now, open the clone repository in IntelliJ. You will see a pop-up in the bottom right asking you to load a maven 
-  build script, where you click the load button.
+  build script, where you click the 'Load Maven Project' button.
 - To run the local server, you must first configure glassfish. To do this, click 'Edit Configurations' in the top right
   of IntelliJ, then click 'Add Configuration' and select GlassFish local. In the menu that pops up, type domain1 into the
   domain entry box, then switch to the 'Deployment' tab and select 'WSChatServer:war exploded'.

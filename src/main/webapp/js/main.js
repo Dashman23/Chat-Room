@@ -17,7 +17,7 @@ function newRoom(){
 }
 
 function refreshList(){
-    // calling the ChatServlet to retrieve a new room ID
+    // calling the ChatServlet to retrieve list of room names
     let callURL= "http://localhost:8080/WSChatServer-1.0-SNAPSHOT/chat-servlet?add=false";
     fetch(callURL, {
         method: 'GET',
@@ -26,12 +26,17 @@ function refreshList(){
         },
     })
         .then(response => response.text())
-        .then(response => listParser(response)); // enter the room with the code
+        .then(response => listParser(response)); // parse the json with room names
 }
 
+//parses our list of rooms when we refresh
 function listParser(json){
+    //parsing json
     let codeList = JSON.parse(json).roomList
+    //clearing current table to avoid dupicating rooms
     document.getElementById("Rooms").innerHTML = "<tbody></tbody>";
+
+    //add each room name to a new row of our table
     let table = document.getElementById("Rooms").getElementsByTagName('tbody')[0];
     for(let i = 0; i < codeList.length; i++) {
         table.insertAdjacentHTML("beforeend",
@@ -39,6 +44,7 @@ function listParser(json){
     }
 }
 
+//used for sending timestamps with chat messages
 function timestamp() {
     var d = new Date(), minutes = d.getMinutes();
     if (minutes < 10) minutes = '0' + minutes;
@@ -46,12 +52,12 @@ function timestamp() {
 }
 
 function enterRoom(code){
-
+    //avoids multiple open sockets
     if (ws != null) {
         ws.close();
     }
 
-    // create the web socket
+    // create the websocket
     ws = new WebSocket("ws://localhost:8080/WSChatServer-1.0-SNAPSHOT/ws/"+code);
 
     document.getElementById("RoomTitle").innerHTML = "You are currently in Room " + code;
@@ -65,7 +71,7 @@ function enterRoom(code){
         }
 }
 
-// handle message
+//sends message over websocket on enter
 document.getElementById("input").addEventListener("keyup", function (event) {
     if (event.keyCode === 13) {
         let request = {"message":event.target.value};
