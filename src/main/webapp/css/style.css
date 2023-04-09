@@ -6,8 +6,6 @@
 html{
     font-family: Cabin;
     overflow-x: hidden;
-
-
 }
 
 header{
@@ -36,7 +34,7 @@ aside{
 
 main{
     background-color: #907AD6;
-    min-height: 100vw;/* Sets the size for the total proportions of links and main together so they line up properly */
+    min-height: 50vw;/* Sets the size for the total proportions of links and main together so they line up properly */
     width: 100%;
     display: table;
     margin: 0px;
