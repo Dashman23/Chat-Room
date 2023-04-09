@@ -29,9 +29,10 @@ function refreshList(){
 function listParser(json){
     let codeList = JSON.parse(json).roomList
     let table = document.getElementById("Rooms").getElementsByTagName('tbody')[0];
+    console.log(document.getElementById("Rooms").innerHTML)
     for(let i = 0; i < codeList.length; i++) {
         table.insertAdjacentHTML("beforeend",
-            " <h3 class=\"d-1\" type=\"button\" onclick=\"enterRoom(' "+ codeList[i] +" ')\">"+ codeList[i] +"</h3>")
+            " <h3 class=\"d-1\" type=\"button\" onclick=\"enterRoom('"+ codeList[i] +"')\">"+ codeList[i] +"</h3>")
 
     }
 }
