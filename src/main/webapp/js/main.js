@@ -1,6 +1,9 @@
-let ws;
+let ws = null;
 
 function newRoom(){
+    if (ws != null) {
+        ws.close();
+    }
     // calling the ChatServlet to retrieve a new room ID
     let callURL= "http://localhost:8080/WSChatServer-1.0-SNAPSHOT/chat-servlet?add=true";
     fetch(callURL, {
@@ -43,6 +46,10 @@ function timestamp() {
 }
 
 function enterRoom(code){
+
+    if (ws != null) {
+        ws.close();
+    }
 
     // create the web socket
     ws = new WebSocket("ws://localhost:8080/WSChatServer-1.0-SNAPSHOT/ws/"+code);

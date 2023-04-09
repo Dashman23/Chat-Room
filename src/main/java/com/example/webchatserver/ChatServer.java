@@ -58,7 +58,7 @@ public class ChatServer {
                 System.out.println(peer.getId());
 
                 if(room.inRoom(peer.getId())) { // broadcast only to those in the same room
-                    peer.getBasicRemote().sendText("{\"message\":\"(Server): " + username + " left the chat room.\"}");
+                    peer.getBasicRemote().sendText("{\"message\":\"(Server " + room.getCode() + "): " + username + " left the chat room.\"}");
                 }
             }
 
@@ -81,7 +81,6 @@ public class ChatServer {
 
             // broadcasting it to peers in the same room
             for(Session peer: session.getOpenSessions()) {
-                System.out.println("ID: " + peer.getId());
                 if (room.inRoom(peer.getId())) {
                     peer.getBasicRemote().sendText("{\"message\":\"(" + username + "): " + message + "\"}");
                 }
@@ -92,8 +91,12 @@ public class ChatServer {
 
         usernames.put(userId, message.trim());
         room.setUserName(userId, message.trim());
-        session.getBasicRemote().sendText("{\"message\":\"(Server "+room.getCode()+
-                "): Welcome, " + message + "!\"}");
+        for(Session peer: session.getOpenSessions()) {
+            if (room.inRoom(peer.getId())) {
+                peer.getBasicRemote().sendText("{\"message\":\"(Server "+room.getCode()+
+                        "): Welcome, " + message + ". Everybody say hi!\"}");
+            }
+        }
     }
 
     //used to ensure each roomID has 1 unique room object, not 1 per session
