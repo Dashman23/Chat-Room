@@ -18,8 +18,6 @@ public class ChatServlet extends HttpServlet {
     //static so this set is unique
     public static Set<String> rooms = new HashSet<>();
 
-
-
     /**
      * Method generates unique room codes
      * **/
