@@ -7,6 +7,10 @@ import jakarta.websocket.server.ServerEndpoint;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -16,14 +20,28 @@ import java.io.IOException;
 public class ChatServer {
 
     // contains a static List of ChatRoom used to control the existing rooms and their users
-
+    private static List<ChatRoom> roomList = new ArrayList<>();
+    private static Map<String,ChatRoom> sessions = new HashMap<>();
     // you may add other attributes as you see fit
-
-
 
     @OnOpen
     public void open(@PathParam("roomID") String roomID, Session session) throws IOException, EncodeException {
+        RemoteEndpoint.Basic out = session.getBasicRemote();
+        // try joining
 
+        ChatRoom room = getRoom(roomID,session);
+        if(room == null){
+            room = new ChatRoom(roomID, session.getId());
+            roomList.add(room);
+            sessions.put(session.getId(),room);
+
+        } else{
+            out.sendText(createMessage("Server "+roomID,"Welcome to the server"));
+        }
+
+        // should notify client when new room is created
+
+        // when joining a room, user will be prompted to enter username
         session.getBasicRemote().sendText("First sample message to the client");
 //        accessing the roomID parameter
         System.out.println(roomID);
@@ -53,5 +71,17 @@ public class ChatServer {
 
     }
 
+    public ChatRoom getRoom(String roomID, Session session){
+        for(ChatRoom room : roomList){
+            if(room.getCode().equals(roomID)){
+                return room;
+            }
+        }
+        return null;
+    }
 
+    public String createMessage(String user, String text){
+        JSONObject msg = new JSONObject();
+        msg.put()
+    }
 }
