@@ -23,7 +23,7 @@ public class ChatServer {
     private static List<ChatRoom> roomList = new ArrayList<>();
     //sessions tracks which active ids are in which active room
     private static Map<String,ChatRoom> sessions = new HashMap<>();
-    //usernames storesthe username of each active id for chat outputs
+    //usernames stores the username of each active id for chat outputs
     private Map<String, String> usernames = new HashMap<String, String>();
 
     @OnOpen
@@ -120,6 +120,7 @@ public class ChatServer {
         return null;
     }
 
+    //optionally can use this function to auto-format
     public String createMessage(String user, String text){
         return "{\"message\":\"("+user+"): "+text+"\"}";
     }

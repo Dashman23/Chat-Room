@@ -1,34 +1,27 @@
-# Chat Server - Assignment 2
+# Web Chat Server - Assignment 2
 > Course: CSCI 2020U: Software Systems Development and Integration
 
 
 ## Project Information
-Have you ever tried to check your email only to see an inbox full of spam? Maybe you've looked for an important email
-you were supposed to receive, only to find out it was incorrectly placed in your spam folder? For this assignment, we
-created a program that detects spam emails using a naive Bayes' algorithm on a set of sample spam and 'ham' emails.
-The more emails you add into the 'train' folder, the better the final results will be. This program was built fully in
-IntelliJ IDEA, by Daniel Zajac, David Garcia and Heisn Nithysingha.
+Have you ever been chatting with someone over email, only to have to constantly refresh the page to see 
+if they sent their reply? To save you from carpal tunnel, our group decided to make a web chat server, 
+where you can type in real time with other users. Our server allows users to create or join chat rooms, 
+where messages will automatically appear when other users send them. We made sure all users can simultaneously 
+type, receive and send messages without any issues, to ensure a seamless chatting experience.
+This program was built fully in IntelliJ IDEA, by David Houle-Tymeczko, Daniel Zajac and Heisn Nithysingha.
 
-> Here is a screenshot of our application displaying the results of our spam detection process:
-![dashboard.png](dashboard.png)
+> Screenshots (todo):
+![chatServer.png](chatServer.png)
+> > Screenshots (todo):
+![chatServer.png](chatServer.png)
 
 ### Project Improvements
-While implementing the naive Bayes' theorem, we made a few key observations. Firstly, words that were extremely common
-in both files did not need to be filtered out, since they have little effect on our algorithm when calculating the
-probability a file is spam. We also noticed that in our algorithm, words that only showed up in one category during
-training, would produce non-meaningful results for the probability a file is spam, such as NaN or negative infinity,
-since we use natural logarithms to balance out the probabilities. To counter this, we revalued these probabilities
-(which were previously 1 and 0), to 0.99999998 and 0.11 (Note that values closer to 0 or 1 sway our algorithm more). The
-first probability is extremely close to 1 because if we encounter a word that has only ever been in spam files, then it
-is unlikely ham files will suddenly start using this word, so we want to give these words a large weight in deciding the
-probability that a file is spam. On the other hand, if we encounter a word that we have only ever seen in ham files,
-then there is still a chance that spam files will try to use these words in the future so that they are not detected as
-easily by spam detectors such as ours. Due to this reasoning, we use a probability of 0.11 which sways our decision less
-(but still a decent amount), so that these words do not 'overpower' our algorithm. When looking at the threshold used to
-make the final decision between spam and ham, we realized that this is a surface level change, and should be left to the
-user of this program to decide how strict the decision should be. We think that 50 (in a range from 0 to 100) is a good
-threshold, however changing this does not affect the algorithm, so it can be changed at any point if you value a
-different accuracy or precision.
+Since users may not want to constantly click the 'Refresh List' button in order to see if other users have 
+created new rooms, our chat server refreshes the list automatically upon some common user actions, such as creating 
+a new room.
+Our chat server also allows users to click on the room they are already in to re-join the room as a 'different' user. 
+This saves them from the minor inconvenience of having to join a different room to be able to join the original 
+room as a new user.
 
 We also included an 'About us' page, which has clickable links with our GitHub profiles attached.
 
