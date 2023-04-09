@@ -30,11 +30,23 @@ public class ChatServer {
         RemoteEndpoint.Basic out = session.getBasicRemote();
         // try joining
         ChatRoom room = getRoom(roomID,session);
+        String userId = session.getId();
+
+        for(ChatRoom Rom : roomList){
+            if(roomID.equals(Rom.getCode())){
+                usernames.put(userId, message.trim());
+                Rom.setUserName(userId, message.trim());
+                session.getBasicRemote().sendText("{\"message\":\"(Server"+room.getCode()+
+                        "): Welcome, " + message + "!\"}");
+            }
+        }
+
         if(room == null){
             room = new ChatRoom(roomID, session.getId());
             roomList.add(room);
             sessions.put(session.getId(),room);
         }
+
         out.sendText(createMessage("Server "+roomID,
                 "Welcome to the server. Please enter a username."));
     }
@@ -49,8 +61,13 @@ public class ChatServer {
             // remove this user from the ChatRoom
             room.removeUser(userId);
 
+
+
             // broadcasting it to peers in the same room
             for (Session peer : session.getOpenSessions()){ //broadcast this person left the server
+
+                System.out.println(peer.getId());
+
                 if(sessions.get(peer.getId()).getCode().equals(room.getCode())) { // broadcast only to those in the same room
                     peer.getBasicRemote().sendText("{\"message\":\"(Server): " + username + " left the chat room.\"}");
                 }
@@ -73,8 +90,18 @@ public class ChatServer {
 
             // broadcasting it to peers in the same room
             for(Session peer: session.getOpenSessions()){
+
+                System.out.println(peer.getId());
+                System.out.println(sessions.get(peer.getId()).getCode());
+                System.out.print(room.getCode());
+                for (String key : sessions.keySet()){
+                    System.out.println(key + " , " + sessions.get(key).getCode());
+                }
                 // only send my messages to those in the same room
-                if(sessions.get(peer.getId()).getCode().equals(room.getCode())) {
+                if(room.inRoom(peer.getId())) {
+
+                    System.out.println("Daniel is racist");
+
                     peer.getBasicRemote().sendText("{\"message\":\"(" + username + "): " + message + "\"}");
                 }
             }
