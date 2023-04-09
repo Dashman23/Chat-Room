@@ -29,6 +29,7 @@ public class ChatServer {
     public void open(@PathParam("roomID") String roomID, Session session) throws IOException, EncodeException {
         RemoteEndpoint.Basic out = session.getBasicRemote();
         // try joining
+<<<<<<< HEAD
         ChatRoom room = getRoom(roomID,session);
         String userId = session.getId();
 
@@ -41,12 +42,18 @@ public class ChatServer {
             }
         }
 
+=======
+        ChatRoom room = getRoom(roomID);
+>>>>>>> 9138cb6ba785df5d3971af868475266feea8cd4f
         if(room == null){
             room = new ChatRoom(roomID, session.getId());
             roomList.add(room);
-            sessions.put(session.getId(),room);
         }
+<<<<<<< HEAD
 
+=======
+        sessions.put(session.getId(),room);
+>>>>>>> 9138cb6ba785df5d3971af868475266feea8cd4f
         out.sendText(createMessage("Server "+roomID,
                 "Welcome to the server. Please enter a username."));
     }
@@ -114,7 +121,7 @@ public class ChatServer {
                 "): Welcome, " + message + "!\"}");
     }
 
-    public ChatRoom getRoom(String roomID, Session session){
+    public ChatRoom getRoom(String roomID){
         for(ChatRoom room : roomList){
             if(room.getCode().equals(roomID)){
                 return room;
