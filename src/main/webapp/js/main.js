@@ -89,4 +89,4 @@ document.getElementById("input").addEventListener("keyup", function (event) {
 
 (function (){
     refreshList();
-})
+})();
