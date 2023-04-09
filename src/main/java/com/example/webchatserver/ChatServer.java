@@ -81,12 +81,10 @@ public class ChatServer {
             return;
         }
 
-
         usernames.put(userId, message.trim());
         room.setUserName(userId, message.trim());
         session.getBasicRemote().sendText("{\"message\":\"(Server"+room.getCode()+
                 "): Welcome, " + message + "!\"}");
-
     }
 
     public ChatRoom getRoom(String roomID, Session session){
