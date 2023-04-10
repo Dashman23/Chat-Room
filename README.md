@@ -12,8 +12,8 @@ This program was built fully in IntelliJ IDEA, by David Houle-Tymeczko, Daniel Z
 
 > Chat Room Example:
 ![ChatRoomExample](Screenshots/chatroomexample.png)
-> > Screenshots (todo):
-![chatServer.png](chatServer.png)
+> > About Page:
+![chatServer.png](Screenshots/chatroomexample2.png)
 
 ### Project Improvements
 Since users may not want to constantly click the 'Refresh List' button in order to see if other users have 
