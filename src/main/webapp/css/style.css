@@ -1,9 +1,9 @@
-@font-face {
+@font-face {/* Initialised custom font */
     font-family: Cabin;
     src: url("Cabin/Cabin-VariableFont_wdth,wght.ttf");
 }
 
-html{
+html{/* Made some default attributes to whole page */
     font-family: Cabin;
     overflow-x: hidden;
     margin: 0;
@@ -15,42 +15,22 @@ body{
     height: 100%;
     margin: 0;
 }
+
 header{
 
     background-repeat: no-repeat;             /* Changed Background Settings to fit page */
     background-color: #2C2A4A;
     background-size: contain;
     width: 100%;                              /* Changed proportions of header for page */
-    height:7%;
-    font-size: 7vw;
-    text-align: center;
+    height:5%;
+    font-size: 5vw;
+    text-align: left;
     color: #050609;
 
 }
-
-.spacing{
-    display: table-cell;
-    width: 1%;
-    height:100%;
-    background-color: #4F518C;
-}
-
-aside{
-    display: table-cell;
-    background-repeat: no-repeat;             /* Changed Background Settings to fit page */
-    background-color: #4F518C;
-    background-size: contain;
-    width: 10%;                              /* Changed proportions of header for page */
-    height:100%;
-    color: #050609;
-}
-
-div{
-    width: 84%;
-    margin: 0 0 0 20px;
-
-}
-
+/* This tag is meant to keep links and main together side by side
+   We display main as a table so the other tags are then presented
+   as a table cell (side by side) */
 main{
     background-color: #907AD6;
     min-height: 80vw;/* Sets the size for the total proportions of links and main together so they line up properly */
@@ -61,7 +41,31 @@ main{
 
 }
 
-textarea{
+div.spacing{ /* Giving a little space on the left side of aside to keep it of the edge */
+    display: table-cell;
+    width: 1%;
+    height:100%;
+    background-color: #4F518C;
+
+}
+
+aside{ /* Has our list of rooms and about section */
+    display: table-cell;
+    background-repeat: no-repeat;             /* Changed Background Settings to fit page */
+    background-color: #4F518C;
+    background-size: contain;
+    width: 10%;                              /* Changed proportions of header for page */
+    height:100%;
+    color: #050609;
+}
+
+div.Text{/* Holds the text chat section of the code*/
+    width: 89%;
+    margin: 0 0 0 20px;
+
+}
+
+textarea{ /* Text box that holds the server log and current time conversations*/
     background-color: #dacffc;
     display: block;
     width: 80%;
@@ -73,7 +77,7 @@ textarea{
 
 }
 
-input{
+input{ /* Input bar*/
     background-color: #dacffc;
     display: block;
     width: 80%;
@@ -129,6 +133,11 @@ footer{
             );
     transition: 0.5s;
 }
+
+p{
+    margin: 10px 0px 0px 0px;
+}
+
 .d-1:hover {
     transform: translate(0,0);
     clip-path:

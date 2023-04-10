@@ -30,16 +30,17 @@
 <main>
   <div class="spacing"></div>
   <aside>
-    <a href="about.html">About us</a>
+    <h3 class="d-1" type="button" onclick="window.location.href='http://localhost:8080/WSChatServer-1.0-SNAPSHOT/about.html'">About Us</h3>
     <p>List of chat rooms:</p>
     <h3 class="d-1" type="button" onclick="newRoom()">Create Room</h3>
     <table id="Rooms"><tbody></tbody></table>
     <h3 class="d-1" type="button" onclick="refreshList()">Refresh List</h3>
   </aside>
-  <div>
+  <div class="Text">
   <h3 id="RoomTitle">You are currently in no Room</h3>
   <textarea title="Chat Log" id="log" readonly>Create or join a room to chat</textarea>
   <input title="Chat Input" id="input" type="text" autofocus/>
+    <p>Click Enter to send message</p>
   </div>
 </main>
 <footer>Message responsibly</footer>
