@@ -10,9 +10,11 @@ where messages will automatically appear when other users send them. We made sur
 type, receive and send messages without any issues, to ensure a seamless chatting experience.
 This program was built fully in IntelliJ IDEA, by David Houle-Tymeczko, Daniel Zajac and Heisn Nithysingha.
 
-> Chat Room Example:
+> Chat Room Example 1:
 ![ChatRoomExample](Screenshots/chatroomexample.png)
-> > About Page:
+> Chat Room Example 2:
+![ChatRoomExample](Screenshots/chatroomexample3.png)
+> About Page:
 ![chatServer.png](Screenshots/chatroomexample2.png)
 
 ### Project Improvements
