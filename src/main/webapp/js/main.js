@@ -13,7 +13,8 @@ function newRoom(){
             'Accept': 'text/plain',
         },
     })
-        .then(response => JSON.parse(response.text()))  // returns a string in JSON format with fields roomList and roomId
+        .then(response => response.text())  // returns a string in JSON format with fields roomList and roomId
+        .then(response => JSON.parse(response))
         .then(response => {
             listParser(response.roomList);
             enterRoom(response.roomId);
